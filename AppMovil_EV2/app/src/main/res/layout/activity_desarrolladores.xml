@@ -121,7 +121,7 @@
         app:layout_constraintHorizontal_bias="0.099"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/feño" />
+        app:srcCompat="@drawable/feno" />
 
     <ImageView
         android:id="@+id/imageView19"
