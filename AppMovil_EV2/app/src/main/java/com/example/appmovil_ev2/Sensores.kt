@@ -36,7 +36,7 @@ lateinit var ampolleta: ImageView
 lateinit var linterna: ImageView
 val mHandler = Handler(Looper.getMainLooper())
 
-class sensores : AppCompatActivity() {
+class Sensores : AppCompatActivity() {
 
     private var ampolletaEncendida = false
     private var linternaEncendida = false
@@ -79,8 +79,9 @@ class sensores : AppCompatActivity() {
             { response: JSONObject ->
                 try {
                     val temperatura = response.getString("temperatura")
-                    temp?.text = "$temperatura C"
-                    hum?.text = "${response.getString("humedad")} %"
+                    val humedad = response.getString("humedad")
+                    temp?.text = "${temperatura} C"
+                    hum?.text = "${humedad} %"
 
                     val valor = temperatura.toFloat()
                     cambiarImagen(valor)
@@ -105,7 +106,7 @@ class sensores : AppCompatActivity() {
 
     private val refrescar = object : Runnable {
         override fun run() {
-            fecha?.text = fechahora()
+            fecha.text = fechahora()
             obtenerDatos()
             mHandler.postDelayed(this, 1000)
         }

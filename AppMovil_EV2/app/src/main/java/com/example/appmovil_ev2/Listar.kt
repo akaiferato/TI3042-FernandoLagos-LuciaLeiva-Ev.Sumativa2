@@ -2,78 +2,87 @@ package com.example.appmovil_ev2
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.EditText
+import android.widget.ListView
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SearchView
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 
 class Listar : AppCompatActivity() {
 
-    private lateinit var rvUsuarios: RecyclerView
-    private lateinit var svSearchUsuarios: SearchView
-    private lateinit var btnVolver: Button
-    private lateinit var adapter: usuarioAdapter
-    private val listaUsuarios = mutableListOf<Usuario>()
+    private lateinit var lista: ListView
+    private lateinit var listausuario: ArrayList<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContentView(R.layout.activity_listar)
-
-        rvUsuarios = findViewById(R.id.rvUsuarios)
-        svSearchUsuarios = findViewById(R.id.svUsuarios)
-        rvUsuarios.layoutManager = LinearLayoutManager(this)
-        adapter = usuarioAdapter(listaUsuarios) { usuario ->
-            val intent = Intent(this, ModificarUsuario::class.java)
-            intent.putExtra("usuario", usuario)
-            startActivity(intent)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
         }
-        rvUsuarios.adapter = adapter
 
-        svSearchUsuarios.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
+        lista= findViewById(R.id.listaUsuario);
+        CargarLista()
+
+        lista.onItemClickListener =
+            AdapterView.OnItemClickListener { parent, view,
+                                              position, id ->
+                val item = listausuario[position]
+                val datos = item.split(" ")
+                if (datos.size >= 4) {
+                    val idusu = datos[0].toIntOrNull() ?: 0
+                    val nombre = datos[1]
+                    val apellido = datos[2]
+                    val email = datos[3]
+                    val intent = Intent(this@Listar,
+                        modificarEliminar::class.java).apply {
+                        putExtra("Id", idusu)
+                        putExtra("Nombre", nombre)
+                        putExtra("Apellido", apellido)
+                        putExtra("Email", email)
+                    }
+                    startActivity(intent)
+                }
             }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                adapter.filter.filter(newText)
-                return true
-            }
-        })
-
-        btnVolver.setOnClickListener {
-            finish()
-        }
     }
 
-    override fun onResume() {
-        super.onResume()
-        cargarUsuarios()
-    }
-
-    private fun cargarUsuarios() {
+    private fun listaUsuario(): ArrayList<String> {
+        val datos = ArrayList<String>()
         val helper = ConexionDbHelper(this)
         val db = helper.readableDatabase
-        val cursor = db.rawQuery("SELECT * FROM USUARIOS", null)
-
-        listaUsuarios.clear()
-
-        if (cursor.moveToFirst()) {
+        val sql = "SELECT * FROM USUARIOS"
+        val c = db.rawQuery(sql, null)
+        if (c.moveToFirst()) {
             do {
-                val id = cursor.getInt(cursor.getColumnIndexOrThrow("ID"))
-                // Se corrige el nombre de las columnas a mayúsculas para que coincida con la BD
-                val nombre = cursor.getString(cursor.getColumnIndexOrThrow("NOMBRE"))
-                val apellido = cursor.getString(cursor.getColumnIndexOrThrow("APELLIDO"))
-                val email = cursor.getString(cursor.getColumnIndexOrThrow("EMAIL"))
-                listaUsuarios.add(Usuario(id, nombre, apellido, email))
-            } while (cursor.moveToNext())
+                val linea = "${c.getInt(0)}" +
+                " ${c.getString(1)}" +
+                " ${c.getString(2)}" +
+                " ${c.getString(3)}"
+                datos.add(linea)
+            } while (c.moveToNext())
         }
-
-        cursor.close()
+        c.close()
         db.close()
-        // Se notifica al adapter en el hilo principal para evitar problemas
-        runOnUiThread {
-            adapter.notifyDataSetChanged()
-        }
+        return datos
+    }
+
+    private fun CargarLista() {
+        listausuario = listaUsuario()
+        val adapter = ArrayAdapter(
+            this, android.R.layout.simple_list_item_1,
+            listausuario
+        )
+        lista.adapter = adapter
+    }
+
+    override fun onStart() {
+        super.onStart()
+        CargarLista()
     }
 }

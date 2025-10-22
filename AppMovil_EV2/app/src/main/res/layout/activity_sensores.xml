@@ -92,8 +92,8 @@
 
     <TextView
         android:id="@+id/humedad"
-        android:layout_width="37dp"
-        android:layout_height="39dp"
+        android:layout_width="111dp"
+        android:layout_height="40dp"
         android:layout_marginTop="368dp"
         android:text="0%"
         android:textAlignment="center"
@@ -101,7 +101,7 @@
         android:textSize="22sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.647"
+        app:layout_constraintHorizontal_bias="0.712"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

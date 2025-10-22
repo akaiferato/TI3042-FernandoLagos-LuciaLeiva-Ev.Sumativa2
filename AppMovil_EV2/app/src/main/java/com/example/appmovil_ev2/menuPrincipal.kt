@@ -31,12 +31,12 @@ class menuPrincipal : AppCompatActivity() {
         }
 
         txtsensores.setOnClickListener {
-            val intent = Intent(this, sensores::class.java)
+            val intent = Intent(this, Sensores::class.java)
             startActivity(intent)
         }
 
         txtdesarrollo.setOnClickListener {
-            val intent = Intent(this, desarrolladores::class.java)
+            val intent = Intent(this, Desarrolladores::class.java)
             startActivity(intent)
         }
     }

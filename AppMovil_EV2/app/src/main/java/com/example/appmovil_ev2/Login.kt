@@ -77,7 +77,7 @@ class Login : AppCompatActivity() {
                     .setContentText("Inicio de sesión exitoso.")
                     .setConfirmText("Continuar")
                     .setConfirmClickListener {
-                        val intent = Intent(this, principal::class.java)
+                        val intent = Intent(this, menuPrincipal::class.java)
                         startActivity(intent)
                         finish()
                     }

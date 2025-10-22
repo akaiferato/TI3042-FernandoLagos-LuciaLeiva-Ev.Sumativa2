@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:textAlignment="center"
     tools:context=".Listar">
 
     <ImageView
@@ -19,37 +20,35 @@
         app:srcCompat="@drawable/logo" />
 
     <TextView
-        android:id="@+id/textView10"
-        android:layout_width="262dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="252dp"
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
         android:text="LISTADO DE USUARIOS"
         android:textAlignment="center"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView10" />
 
     <SearchView
-        android:id="@+id/svUsuarios"
-        android:layout_width="356dp"
-        android:layout_height="47dp"
-        android:layout_marginTop="300dp"
+        android:id="@+id/searchUsuario"
+        android:layout_width="344dp"
+        android:layout_height="34dp"
+        android:layout_marginTop="12dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvUsuarios"
-        android:layout_width="381dp"
-        android:layout_height="341dp"
-        android:layout_marginTop="360dp"
+    <ListView
+        android:id="@+id/listaUsuario"
+        android:layout_width="333dp"
+        android:layout_height="338dp"
+        android:layout_marginTop="12dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.533"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        app:layout_constraintTop_toBottomOf="@+id/searchUsuario" />
 </androidx.constraintlayout.widget.ConstraintLayout>
